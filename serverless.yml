@@ -1,5 +1,5 @@
 service: cart-service
-
+frameworkVersion: '3.30.1'
 plugins:
   - serverless-offline
   - serverless-dotenv-plugin
