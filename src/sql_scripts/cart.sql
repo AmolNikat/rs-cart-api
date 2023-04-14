@@ -32,9 +32,9 @@ create table orders (
 	total integer
 );
 
-insert into users (id, name, email, password) values ('77276a4b-b692-4fa5-ac21-053a8c0e4e31', 'Matt', 'matt@companyname.com', '123');
-insert into users (id, name, email, password) values ('ae72bdb2-7646-41c6-852c-22c57776918e', 'Chris', 'chris@companyname.com', '321');
-insert into users (id, name, email, password) values ('54b120ae-24f9-41d8-ac43-0eedcf6dde73', 'Nick', 'nick@companyname.com', '111');
+insert into users (id, name, email, password) values ('77276a4b-b692-4fa5-ac21-053a8c0e4e31', 'xyz', 'xyz@companyname.com', '123');
+insert into users (id, name, email, password) values ('ae72bdb2-7646-41c6-852c-22c57776918e', 'abc', 'abc@companyname.com', '321');
+insert into users (id, name, email, password) values ('54b120ae-24f9-41d8-ac43-0eedcf6dde73', 'def', 'def@companyname.com', '111');
 
 insert into carts (id, user_id, created_at, updated_at, status) values ('7d1d78bf-0b81-46f9-ad52-45cfa475ece6', '77276a4b-b692-4fa5-ac21-053a8c0e4e31', '2023-03-11', '2023-03-11', 'OPEN');
 insert into carts (id, user_id, created_at, updated_at, status) values ('4938ffac-3507-4c7c-967a-097e7b68c9f4', '54b120ae-24f9-41d8-ac43-0eedcf6dde73', '2023-03-09', '2023-03-10', 'ORDERED');
