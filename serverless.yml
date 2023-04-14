@@ -5,10 +5,13 @@ plugins:
   - serverless-dotenv-plugin
 
 useDotenv: true
+
 provider:
   name: aws
-  region: ap-south-1
   runtime: nodejs14.x
+  region: ap-south-1
+  stage: dev
+  profile: default
 
 functions:
   main:
