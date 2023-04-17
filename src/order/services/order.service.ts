@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { v4 } from 'uuid';
 
 import { Order } from '../models';
+import { pool } from '../../pg-pool'
 
 @Injectable()
 export class OrderService {
@@ -11,7 +12,7 @@ export class OrderService {
     return this.orders[ orderId ];
   }
 
-  create(data: any) {
+  async create(data: any) {
     const id = v4(v4())
     const order = {
       ...data,
@@ -19,7 +20,35 @@ export class OrderService {
       status: 'inProgress',
     };
 
-    this.orders[ id ] = order;
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+      await client.query(
+        `insert into orders (id, user_id, cart_id, payment, delivery, comments, status, total) values ($1, $2, $3, $4, $5, $6, $7, $8);`,
+        [
+          order.id,
+          order.userId,
+          order.cartId,
+          JSON.stringify(order.payment),
+          JSON.stringify(order.address),
+          order.comments,
+          order.status,
+          order.total,
+        ],
+      );
+      await client.query(
+        `update carts
+       set "status" = 'ORDERED', "updated_at" = current_date
+       where carts.user_id = $1 and carts.status = 'OPEN'`,
+        [order.userId],
+      );
+      await client.query('COMMIT');
+    } catch (e) {
+      await client.query('ROLLBACK');
+      throw e;
+    } finally {
+      client.release();
+    }
 
     return order;
   }
@@ -35,5 +64,21 @@ export class OrderService {
       ...data,
       id: orderId,
     }
+  }
+
+  async getOrders() {
+    
+    const client = await pool.connect();
+    let res;
+    try {
+      res = await client.query(
+        `select * from orders`,
+      )
+    } catch (e) {
+      throw e;
+    } finally {
+      client.release();
+    }
+    return res.rows
   }
 }
